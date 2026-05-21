@@ -15,6 +15,7 @@ import 'package:path/path.dart' as p;
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import '../models/case_filter.dart';
+import 'database_migrations.dart';
 
 // ── خدمات الإشعارات والاعتمادات ───────────────────────────────
 import '../notifications/notification_service.dart';
@@ -780,7 +781,16 @@ class DatabaseService {
       await dbFile.writeAsBytes(bytes, flush: true);
     }
 
-    return openDatabase(dbPath);
+    return openDatabase(
+      dbPath,
+      version: DatabaseMigrations.targetVersion,
+      onCreate: (db, version) async {
+        await DatabaseMigrations.runMigrations(db, 0, version);
+      },
+      onUpgrade: (db, oldVersion, newVersion) async {
+        await DatabaseMigrations.runMigrations(db, oldVersion, newVersion);
+      },
+    );
   }
 
   static Future<void> _ensureDefaultAdmin(Database db) async {

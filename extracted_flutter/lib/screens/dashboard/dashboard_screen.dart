@@ -22,7 +22,10 @@ import '../../notifications/notification_bell.dart';
 import '../../notifications/approval_screen.dart';
 import '../../notifications/my_requests_screen.dart';
 import '../admin/admin_panel_screen.dart';
+import '../admin/device_approval_screen.dart';
+import '../sync/sync_status_screen.dart';
 import '../../database/session_service.dart';
+import '../../widgets/sync_status_badge.dart';
 import '../login/login_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -300,6 +303,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               ),
                             )
                         : null,
+                    onOpenDeviceApproval: _isManager
+                        ? () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => DeviceApprovalScreen(
+                                  currentUser: widget.user,
+                                ),
+                              ),
+                            )
+                        : null,
+                    onOpenSyncStatus: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => SyncStatusScreen(
+                          currentUser: widget.user,
+                        ),
+                      ),
+                    ),
                   ),
 
                   // ── منطقة المحتوى الرئيسية ────────────────────
@@ -540,6 +561,8 @@ class _Header extends StatelessWidget {
             ),
 
           const SizedBox(width: 8),
+          const SyncStatusBadge(),
+          const SizedBox(width: 8),
 
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
@@ -627,6 +650,8 @@ class _SideMenu extends StatelessWidget {
     this.onOpenAdminPanel,
     this.onOpenApproval,
     this.onOpenMyRequests,
+    this.onOpenDeviceApproval,
+    this.onOpenSyncStatus,
   });
 
   final Map<String, dynamic> currentUser;
@@ -638,6 +663,8 @@ class _SideMenu extends StatelessWidget {
   final VoidCallback?    onOpenAdminPanel;
   final VoidCallback?    onOpenApproval;
   final VoidCallback?    onOpenMyRequests;
+  final VoidCallback?    onOpenDeviceApproval;
+  final VoidCallback?    onOpenSyncStatus;
 
   @override
   Widget build(BuildContext context) {
@@ -696,6 +723,14 @@ class _SideMenu extends StatelessWidget {
                       onTap: onOpenApproval,
                     ),
 
+                  // ── موافقة الأجهزة (مدير) ────────────────────
+                  if (isManager && onOpenDeviceApproval != null)
+                    _MenuItem(
+                      title: 'موافقة الأجهزة',
+                      icon:  Icons.devices_outlined,
+                      onTap: onOpenDeviceApproval,
+                    ),
+
                   // ── لوحة التحكم (مدير) ───────────────────────
                   if (isManager && onOpenAdminPanel != null)
                     _MenuItem(
@@ -712,6 +747,13 @@ class _SideMenu extends StatelessWidget {
                       icon:  Icons.assignment_outlined,
                       onTap: onOpenMyRequests,
                     ),
+
+                  // ── حالة المزامنة (للجميع) ───────────────────
+                  _MenuItem(
+                    title: 'حالة المزامنة',
+                    icon:  Icons.sync_outlined,
+                    onTap: onOpenSyncStatus,
+                  ),
                 ],
               ),
             ),
