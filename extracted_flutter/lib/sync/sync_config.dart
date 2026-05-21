@@ -11,7 +11,7 @@ class SyncConfig {
   // مثال: https://alfashn-violations.ahmed.replit.app/api
   // ═══════════════════════════════════════════════════════════
   static const String serverBaseUrl =
-      'https://YOUR-REPLIT-PROJECT.replit.app/api';
+      'https://engineering-violation-sync--btq16.replit.app/api';
 
   // مفتاح API المشترك — يجب أن يتطابق مع SYNC_API_KEY على السيرفر
   static const String apiKey = 'alfashn-sync-key-2024';
