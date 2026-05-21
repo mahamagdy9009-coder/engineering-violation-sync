@@ -1,0 +1,8 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "JXSMa8b72AqmYhhy5VMGM"
+uri = "file://sync_flutter_files.zip"
+type = "unspecified"
+title = "ملفات المزامنة — جاهزة للإضافة لمشروع Flutter"
